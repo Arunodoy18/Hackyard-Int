@@ -421,13 +421,6 @@ const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[86400,"day"
 const num=n=>n.toLocaleString("en-US");
 const host=u=>{try{return new URL(/^https?:/.test(u)?u:"https://"+u).host.replace(/^www\./,"")}catch{return u}};
 
-async function gh(path){
-  const r=await fetch("https://api.github.com"+path,{headers:{Accept:"application/vnd.github+json"}});
-  if(r.status===404)throw new Error("We couldn't find that GitHub user. Please check the spelling.");
-  if(r.status===403||r.status===429)throw new Error("Too many requests right now. Please try again in a few minutes.");
-  if(!r.ok)throw new Error("Something went wrong. Please try again.");
-  return r.json();
-}
 // Top repos: original work only, recent work first, with a small boost for stars.
 const FEATURED={arunodoy18:["NutTrack","Cadence","TheZone"]};
 function pickTop(repos){
@@ -547,13 +540,11 @@ async function generate(name,demo){
   if(!/^[a-z\d](?:[a-z\d-]{0,38})$/i.test(name)){setMsg("Please enter a valid GitHub username.",1);return}
   setMsg("Creating your card…",0,1);$("#card").classList.add("hide");
   try{
-    const u=await gh("/users/"+name);
-    const [repos,events,cm]=await Promise.all([
-      gh(`/users/${name}/repos?per_page=100&sort=pushed`),
-      gh(`/users/${name}/events/public?per_page=100`),
-      gh(`/search/commits?q=author:${encodeURIComponent(name)}&per_page=1`).catch(()=>null)
-    ]);
-    render(u,repos,events,cm&&typeof cm.total_count==="number"?cm.total_count:null);
+    const r=await fetch("/api/profile?u="+encodeURIComponent(name));
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.error||"Something went wrong. Please try again.");
+    const {user:u,repos,events,commits:cmTotal}=data;
+    render(u,repos,events,cmTotal);
     $("#msg").classList.add("hide");$("#card").classList.remove("hide");
     if(!demo){history.replaceState(null,"","?u="+u.login);document.title=(u.name||u.login)+" · Builder Card"}
   }catch(err){setMsg(err.message,1)}
