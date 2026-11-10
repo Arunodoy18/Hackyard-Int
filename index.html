@@ -482,7 +482,7 @@ function render(u,repos,events,totalCommits){
     try{
       const svg=await (await fetch(cardUrl(u.login))).text();
       const img=new Image();img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);await img.decode();
-      const c=document.createElement("canvas");c.width=2000;c.height=1080;c.getContext("2d").drawImage(img,0,0,2000,1080);
+      const c=document.createElement("canvas");c.width=2200;c.height=1200;c.getContext("2d").drawImage(img,0,0,2200,1200);
       c.toBlob(b=>save(b,u.login+"-builder-card.png"),"image/png");
     }catch{note("Download failed. Try again.")}
   };
