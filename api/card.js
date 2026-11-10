@@ -33,7 +33,10 @@ async function gh(path) {
   return r.json();
 }
 
+const FEATURED = { arunodoy18: ["NutTrack", "Cadence", "TheZone"] };
 function pickTop(repos) {
+  const pinned = FEATURED[(repos[0]?.owner.login || "").toLowerCase()];
+  if (pinned) { const m = pinned.map((n) => repos.find((r) => r.name === n)).filter(Boolean); if (m.length) return m; }
   const score = (r) => new Date(r.pushed_at).getTime() + r.stargazers_count * 14 * DAY;
   return repos
     .filter((r) => !r.fork && !r.archived && r.language && r.name.toLowerCase() !== r.owner.login.toLowerCase())
