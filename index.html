@@ -501,7 +501,7 @@ function applyTab(){
 }
 $("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b){tab=b.dataset.s;applyTab()}};
 
-async function generate(name){
+async function generate(name,demo){
   name=name.trim().replace(/^@/,"").replace(/^https?:\/\/github\.com\//i,"").split(/[/?#]/)[0];
   if(!/^[a-z\d](?:[a-z\d-]{0,38})$/i.test(name)){setMsg("Please enter a valid GitHub username.",1);return}
   setMsg("Creating your card…",0,1);$("#card").classList.add("hide");
@@ -514,7 +514,7 @@ async function generate(name){
     ]);
     render(u,repos,events,cm&&typeof cm.total_count==="number"?cm.total_count:null);
     $("#msg").classList.add("hide");$("#card").classList.remove("hide");
-    history.replaceState(null,"","?u="+u.login);document.title=(u.name||u.login)+" · Builder Card";
+    if(!demo){history.replaceState(null,"","?u="+u.login);document.title=(u.name||u.login)+" · Builder Card"}
   }catch(err){setMsg(err.message,1)}
 }
 function setMsg(t,err,load){const m=$("#msg");m.className=err?"err":"";m.innerHTML=(load?'<div class="spin"></div>':"")+esc(t)}
@@ -570,7 +570,7 @@ $("#toHome").onclick=showWelcome;
 
 const q=new URLSearchParams(location.search).get("u");
 if(q){W.classList.add("hide");$("#u").value=q;generate(q)}
-else{document.body.classList.add("welcome-on");playIntro()}
+else{document.body.classList.add("welcome-on");playIntro();$("#u").value="Arunodoy18";generate("Arunodoy18",true)}
 </script>
 </body>
 </html>
