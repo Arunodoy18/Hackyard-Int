@@ -163,92 +163,120 @@ footer b{color:#e4e4e7;display:block;margin-bottom:4px}
 /* ---------- Welcome screen ---------- */
 body.welcome-on{overflow:hidden}
 body.welcome-on #app{display:none}
-#welcome{position:fixed;inset:0;z-index:50;overflow:hidden;background:#050506;color:#fff;transition:opacity .6s ease,transform .6s ease}
+#welcome{position:fixed;inset:0;z-index:50;overflow:hidden;background:#050304;color:#fff;transition:opacity .6s ease,transform .6s ease}
 #welcome.leave{opacity:0;transform:scale(1.03);pointer-events:none}
-.w-glow{position:absolute;inset:0;background:radial-gradient(700px 400px at 78% 45%,rgba(212,38,74,.16),transparent 70%),radial-gradient(500px 300px at 90% 60%,rgba(230,185,77,.08),transparent 70%)}
-.w-nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 5vw}
+.w-glow{position:absolute;inset:0;background:radial-gradient(900px 460px at 50% 88%,rgba(225,29,63,.24),transparent 70%),radial-gradient(520px 320px at 50% 52%,rgba(255,140,0,.07),transparent 70%)}
+.w-nav{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 5vw}
 .w-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.01em}
 .w-logo svg{width:28px;height:28px;color:var(--red)}
-.w-links{display:flex;gap:28px;font-size:14px;font-weight:500}
-.w-links button{background:none;color:#cfcfd4;padding:4px 0;transition:color .2s}
-.w-links button:hover,.w-links button.on{color:#fff}
-.w-main{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 5vw;height:calc(100vh - 140px);min-height:420px;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:20px}
-.w-copy{padding-bottom:6vh}
-.w-copy h1{margin:0;white-space:nowrap;font-size:clamp(30px,4.5vw,60px);line-height:1.08;letter-spacing:-.03em;font-weight:700;min-height:2.2em;position:relative}
-.w-copy h1 em{font-style:normal;color:var(--gold)}
-.caret{display:inline-block;width:2px;height:.9em;background:#fff;margin-left:3px;vertical-align:-.08em;animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.spark{position:absolute;left:105%;top:-.1em;height:.75em;width:.75em;height:.75em;color:var(--gold);opacity:0;transform:scale(.4) rotate(-10deg);transform-origin:bottom left}
-.spark.on{animation:pop .5s cubic-bezier(.2,1.4,.4,1) forwards}
-@keyframes pop{to{opacity:1;transform:none}}
-.w-sub{margin:18px 0 0;max-width:420px;font-size:clamp(15px,1.6vw,18px);color:#b9b9c1;opacity:0;transform:translateY(10px);transition:.7s ease}
-.w-sub b{color:#fff;font-weight:600}
-.w-btns{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;opacity:0;transform:translateY(10px);transition:.7s ease;position:relative}
-.w-sub.show,.w-btns.show{opacity:1;transform:none}
-.wb{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:12px;font-weight:600;font-size:15px;transition:transform .2s,filter .2s,box-shadow .2s}
-.wb svg{width:16px;height:16px}
-.wb.go{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;box-shadow:0 8px 30px -8px rgba(212,38,74,.7)}
-.wb.go:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.wb.demo{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.3);color:#fff}
-.wb.demo:hover{border-color:var(--gold);color:var(--gold)}
-.wb.go.press{animation:press .7s ease}
-@keyframes press{40%{transform:scale(.95);box-shadow:0 0 0 0 rgba(212,38,74,.8)}100%{transform:none;box-shadow:0 0 0 22px rgba(212,38,74,0)}}
-.fcursor{position:absolute;left:78%;top:150%;width:22px;height:22px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));z-index:5}
-.fcursor.go{animation:cur 1.4s ease forwards}
-@keyframes cur{0%{opacity:0;left:92%;top:170%}25%{opacity:1}75%{left:22%;top:62%;opacity:1}100%{left:20%;top:58%;opacity:1}}
-
-.w-art{position:relative;height:100%;display:grid;place-items:center;perspective:1100px}
-.device{position:relative;width:min(320px,70%);aspect-ratio:300/340;border-radius:22px;
-  background:linear-gradient(145deg,#1d1014,#0b0809 70%);border:1.5px solid rgba(212,38,74,.9);
-  box-shadow:0 0 60px rgba(212,38,74,.35),inset 0 0 40px rgba(212,38,74,.12);
-  transform:rotateY(-20deg) rotateX(8deg) rotateZ(5deg);opacity:.22;filter:saturate(.5);
-  transition:opacity 1.6s ease,filter 1.6s ease,box-shadow 1.6s ease;animation:float 6s ease-in-out infinite}
-.device.lit{opacity:1;filter:none}
-@keyframes float{50%{translate:0 -10px}}
-.dots{position:absolute;left:18px;top:16px;display:flex;gap:6px}
-.dots i{width:8px;height:8px;border-radius:50%;background:#ef4444}.dots i:nth-child(2){background:var(--gold)}.dots i:nth-child(3){background:#5b5b66}
-.gh{position:absolute;left:50%;top:24%;width:32%;height:auto;aspect-ratio:1;translate:-50% 0;color:#e9e9ec;filter:drop-shadow(0 0 14px rgba(255,255,255,.25))}
-.bars{position:absolute;left:12%;right:12%;bottom:14%;display:grid;gap:12px}
-.bars i{display:block;height:11px;border-radius:6px;background:#3a3a42}
-.bars i:nth-child(1){background:linear-gradient(90deg,#b8b8c0,#6a6a74);width:100%}
-.bars i:nth-child(2){background:linear-gradient(90deg,var(--gold),#b5862a);width:78%}
-.bars i:nth-child(3){background:linear-gradient(90deg,var(--red),var(--red2));width:60%}
-.bars i:nth-child(4){width:42%;background:#2a2a31}
-.orbit{position:absolute;height:auto;width:min(560px,118%);left:50%;top:50%;translate:-50% -50%;rotate:-18deg;pointer-events:none;opacity:.2;transition:opacity 1.6s}
-.orbit.lit{opacity:1}
-.orbit ellipse{fill:none;stroke:url(#og);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:420 900;animation:dash 7s linear infinite;filter:drop-shadow(0 0 6px rgba(230,185,77,.7))}
-@keyframes dash{to{stroke-dashoffset:-1320}}
-
-.waves{position:absolute;left:0;right:0;bottom:0;height:34vh;min-height:170px;z-index:1;pointer-events:none}
+.w-links{display:flex;gap:28px;font-size:14px;font-weight:600}
+.w-links button{background:none;color:#e4e4e7;padding:4px 0;transition:color .2s}
+.w-links button:hover{color:var(--gold)}
+.waves{position:absolute;left:0;right:0;bottom:0;height:36vh;min-height:170px;z-index:1;pointer-events:none}
 .waves svg{position:absolute;inset:0;width:100%;height:100%}
 .waves path{transform-origin:50% 100%;animation:wave 9s ease-in-out infinite alternate}
 .waves path:nth-child(2){animation-duration:12s;animation-delay:-3s}
 .waves path:nth-child(3){animation-duration:15s;animation-delay:-6s}
 @keyframes wave{from{transform:translateX(-2%) scaleY(1)}to{transform:translateX(2%) scaleY(1.12)}}
-.skip{position:absolute;right:5vw;bottom:22px;z-index:4;background:none;color:#8b8b95;font-size:12px;opacity:0;transition:opacity .6s}
+
+.w-main{position:relative;z-index:3;max-width:1240px;margin:0 auto;padding:0 5vw;height:calc(100vh - 100px);min-height:460px;display:grid;grid-template-columns:1fr 1fr;align-items:center}
+.w-copy{padding-bottom:4vh;position:relative;z-index:4}
+.hw{position:relative;display:inline-block}
+.w-copy h1{margin:0;font-size:clamp(34px,4.9vw,66px);line-height:1.08;letter-spacing:-.03em;font-weight:800;white-space:nowrap}
+.ln{display:block;opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.ln em{font-style:normal;color:var(--gold)}
+.idw{position:relative;display:inline-block}
+.ul{position:absolute;left:0;bottom:-.12em;width:92%;height:.16em;overflow:visible}
+.ul path{fill:none;stroke:var(--gold);stroke-width:3.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .9s ease .5s}
+.spark{position:absolute;right:-.7em;top:-.35em;width:.7em;height:.7em;color:var(--gold);opacity:0;transform:scale(.4) rotate(-10deg);transform-origin:bottom left;transition:opacity .4s,transform .5s cubic-bezier(.2,1.4,.4,1) .3s}
+.w-copy.show .ln{opacity:1;transform:none}
+.w-copy.show .ln:nth-child(2){transition-delay:.15s}.w-copy.show .ln:nth-child(3){transition-delay:.3s}
+.w-copy.show .ul path{stroke-dashoffset:0}
+.w-copy.show .spark{opacity:1;transform:none}
+.w-sub{margin:22px 0 0;max-width:380px;font-size:clamp(15px,1.5vw,18px);color:#d4d4d8;line-height:1.5;opacity:0;transform:translateY(10px);transition:.7s ease}
+.w-btns{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;opacity:0;transform:translateY(10px);transition:.7s ease;position:relative}
+.w-sub.show,.w-btns.show{opacity:1;transform:none}
+.wb{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:12px;font-weight:600;font-size:15px;transition:transform .2s,filter .2s,box-shadow .2s}
+.wb svg{width:16px;height:16px}
+.wb.go{background:linear-gradient(180deg,#ec2a4d,var(--red2));color:#fff;box-shadow:0 8px 30px -8px rgba(225,29,63,.8)}
+.wb.go:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.wb.demo{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.35);color:#fff}
+.wb.demo:hover{border-color:var(--gold);color:var(--gold)}
+.wb.go.press{animation:press .8s ease}
+@keyframes press{40%{transform:scale(.95);box-shadow:0 0 0 0 rgba(236,42,77,.9)}100%{transform:none;box-shadow:0 0 0 24px rgba(236,42,77,0)}}
+.fcursor{position:absolute;left:78%;top:150%;width:22px;height:22px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));z-index:6}
+.fcursor.go{animation:cur 1.4s ease forwards}
+@keyframes cur{0%{opacity:0;left:92%;top:170%}25%{opacity:1}75%{left:22%;top:62%;opacity:1}100%{left:20%;top:58%;opacity:1}}
+.skip{position:absolute;right:5vw;bottom:22px;z-index:6;background:none;color:#a1a1aa;font-size:12px;opacity:0;transition:opacity .6s}
 .skip.show{opacity:1}.skip:hover{color:#fff}
 
-.appnav{display:flex;align-items:center;justify-content:space-between;padding:20px 5vw;max-width:1240px;margin:0 auto}
-.appnav .links{display:flex;gap:24px;font-size:14px}
-.appnav .links button{background:none;color:var(--mut)}.appnav .links button:hover{color:var(--text)}
-.logo svg{width:26px;height:26px;color:var(--red)}
+/* --- the card stage --- */
+.stage{--cw:clamp(150px,min(19vw,31vh),280px);position:absolute;z-index:2;left:50%;top:46%;width:min(640px,52vw);height:min(480px,60vh);transform:translate(-50%,-50%);perspective:1300px;transition:left 1.3s cubic-bezier(.6,0,.2,1)}
+.stage.s6{left:73%}
+.plat{position:absolute;left:50%;bottom:6%;width:calc(var(--cw)*3);aspect-ratio:5/1;translate:-50% 0;border-radius:50%;border:2px solid rgba(255,176,46,.95);
+  background:radial-gradient(ellipse at center,rgba(255,150,30,.34),rgba(255,120,0,.06) 70%,transparent);
+  box-shadow:0 0 30px rgba(255,150,0,.85),0 0 80px rgba(255,110,0,.45),inset 0 0 26px rgba(255,150,0,.55);
+  opacity:0;transform:scaleX(.35);transition:opacity .9s,transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.plat::after{content:"";position:absolute;inset:16% 10%;border-radius:50%;border:1px solid rgba(255,200,90,.7);box-shadow:0 0 14px rgba(255,170,40,.6)}
+.s1 .plat{opacity:1;transform:none}
+.s6 .plat{opacity:0;transition-duration:1.4s}
+.cards{position:absolute;left:50%;top:47%;width:0;height:0}
+.card{position:absolute;left:calc(var(--cw)/-2);top:calc(var(--cw)*-.76);width:var(--cw);height:calc(var(--cw)*1.42)}
+.mainw{position:absolute;transform-style:preserve-3d;opacity:0;transform:translateY(90px) scale(.9);transition:transform 1.1s cubic-bezier(.2,.8,.2,1),opacity .9s;z-index:3}
+.s2 .mainw{opacity:1;transform:none}
+.s3 .mainw{transform:rotateY(-18deg) rotateX(8deg) rotateZ(8deg) translateY(-8px)}
+.s4 .mainw{transform:none}
+.s6 .mainw{transform:rotateY(-20deg) rotateX(8deg) rotateZ(6deg)}
+.flip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.5,0,.2,1)}
+.s5 .flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:calc(var(--cw)*.09);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.face.back{background:linear-gradient(160deg,#5a1220,#240810 55%,#3a0c16);border:calc(var(--cw)*.012 + 1px) solid #f5a524;
+  box-shadow:0 0 34px rgba(255,140,20,.65),0 0 90px rgba(225,29,63,.35),inset 0 0 50px rgba(225,29,63,.4)}
+.face.back .corners{position:absolute;inset:4%;width:92%;height:92%;color:#f5b13a;opacity:.9}
+.face.back .glyph{position:absolute;left:50%;top:50%;width:54%;height:auto;aspect-ratio:1;translate:-50% -50%;color:#f7a82b;filter:drop-shadow(0 0 10px rgba(255,150,20,.9))}
+.face.front{transform:rotateY(180deg);background:linear-gradient(160deg,#1a0c0e,#0b0607);border:calc(var(--cw)*.014 + 1px) solid #ff5a3c;
+  box-shadow:0 0 28px rgba(255,80,50,.85),0 0 80px rgba(225,29,63,.5),inset 0 0 26px rgba(255,90,60,.28)}
+.face.front .dots{position:absolute;left:9%;top:5%;display:flex;gap:5px}
+.face.front .dots i{width:calc(var(--cw)*.04);height:calc(var(--cw)*.04);border-radius:50%;background:#f5b13a}
+.face.front .dots i:nth-child(2){background:#fde047}.face.front .dots i:nth-child(3){background:#e4e4e7}
+.face.front .ghl{position:absolute;left:50%;top:15%;width:40%;height:auto;aspect-ratio:1;translate:-50% 0;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.35))}
+.face.front .bars{position:absolute;left:11%;right:11%;bottom:13%;display:grid;gap:calc(var(--cw)*.045)}
+.face.front .bars i{display:block;height:calc(var(--cw)*.042);border-radius:99px;background:#3a3438;position:relative;overflow:hidden}
+.face.front .bars i::before{content:"";position:absolute;inset:0 auto 0 0;border-radius:99px}
+.bars i:nth-child(1)::before{width:100%;background:linear-gradient(90deg,#d4d4d8,#8b8b93)}
+.bars i:nth-child(2)::before{width:46%;background:linear-gradient(90deg,#fbbf24,#d97706)}
+.bars i:nth-child(3)::before{width:40%;background:linear-gradient(90deg,#ef4444,#b91c1c)}
+.bars i:nth-child(4)::before{width:30%;background:linear-gradient(90deg,#ef4444,#7f1d1d)}
+.side{position:absolute;z-index:1;border-radius:calc(var(--cw)*.09);opacity:0;transform:scale(.8);transition:transform 1.1s cubic-bezier(.2,.8,.2,1),opacity .9s,filter 1s;
+  background:linear-gradient(160deg,#3a0f18,#14070a 60%,#22090f);border:1.5px solid rgba(200,125,40,.7);box-shadow:0 0 30px rgba(225,29,63,.25),inset 0 0 40px rgba(0,0,0,.5)}
+.side .corners{position:absolute;inset:5%;width:90%;height:90%;color:#b8741f;opacity:.7}
+.side .g{position:absolute;left:50%;top:50%;width:42%;height:auto;aspect-ratio:1;translate:-50% -50%;color:#8a6a4a;transition:opacity .8s}
+.side.r .g{color:#7a5a45}
+.side .g2{opacity:0}
+.s4 .side.l{opacity:.95;transform:translateX(calc(var(--cw)*-.66)) translateY(calc(var(--cw)*.1)) rotate(-12deg) scale(.93)}
+.s4 .side.r{opacity:.95;transform:translateX(calc(var(--cw)*.66)) translateY(calc(var(--cw)*.1)) rotate(11deg) scale(.93)}
+.s5 .side{filter:brightness(.78)}
+.s5 .side.l .g1{opacity:0}.s5 .side.l .g2{opacity:1}
+.orbit{height:auto;position:absolute;left:50%;top:50%;width:calc(var(--cw)*3.2);translate:-50% -40%;rotate:-14deg;height:auto;overflow:visible;pointer-events:none;transition:rotate 1.3s ease,width 1.3s ease,translate 1.3s ease,opacity 1s}
+.orbit path{fill:none;stroke:url(#og2);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 7px rgba(255,170,40,.95));transition:stroke-dashoffset 1.4s ease}
+.orbit.back{z-index:1}.orbit.front{z-index:6}
+.s3 .orbit path{stroke-dashoffset:0}
+.s5 .orbit{opacity:.55}
+.s6 .orbit{opacity:1;width:calc(var(--cw)*3.7);rotate:-20deg;translate:-48% -34%}
+.ember{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffb347;box-shadow:0 0 8px #ff9a1f;opacity:0;pointer-events:none}
+.s2 .ember{animation:rise 4.2s linear infinite}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.95}100%{transform:translate(16px,-150px);opacity:0}}
+.s6 .cards{animation:float 6s ease-in-out infinite}
+@keyframes float{50%{translate:0 -9px}}
 
 @media(max-width:860px){
-  .w-main{grid-template-columns:minmax(0,1fr);height:auto;padding-top:3vh;gap:0}
-  .w-art{height:300px;order:2;overflow:hidden;margin-top:18px}.w-copy{padding-bottom:0}
-  .device{width:200px}.orbit{width:118%}
-  .w-links{gap:16px;font-size:13px}.w-logo{font-size:17px}
-  .w-sub{max-width:100%}.spark{left:auto;right:0}
+  .w-main{grid-template-columns:minmax(0,1fr);height:auto;min-height:0;padding-top:1vh}
+  .stage{position:relative;left:auto;top:auto;transform:none;width:min(440px,92vw);height:320px;margin:0 auto;order:-1;--cw:clamp(104px,30vw,150px)}
+  .stage.s6{left:auto}
+  .w-copy{padding-bottom:0}.w-links{gap:16px;font-size:13px}.w-logo{font-size:17px}
+  .w-sub{max-width:100%}
 }
-@media(prefers-reduced-motion:reduce){
-  .w-sub,.w-btns{opacity:1;transform:none}.device{opacity:1;filter:none}.orbit{opacity:1}.spark{opacity:1;transform:none}
-}
-@media(max-width:1000px){.card{grid-template-columns:1fr}.profile{grid-row:auto}}
-@media(max-width:560px){
-  .stats{grid-template-columns:repeat(2,1fr);row-gap:18px}.stat:nth-child(3){border-left:0;padding-left:4px}
-  .repo{align-items:flex-start}.donut{width:116px;height:116px}
-}
-@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+@media(prefers-reduced-motion:reduce){#welcome *{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -257,9 +285,9 @@ body.welcome-on #app{display:none}
   <div class="waves" aria-hidden="true">
     <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
       <defs>
-        <linearGradient id="wg1" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".25" stop-color="#d4264a" stop-opacity=".55"/><stop offset=".7" stop-color="#8f1230" stop-opacity=".35"/><stop offset="1" stop-color="#8f1230" stop-opacity=".05"/></linearGradient>
-        <linearGradient id="wg2" x1="0" x2="1"><stop offset="0" stop-color="#ff3d68" stop-opacity=".0"/><stop offset=".3" stop-color="#ff3d68" stop-opacity=".45"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
-        <linearGradient id="wg3" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".5" stop-color="#5a0a1e" stop-opacity=".7"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
+        <linearGradient id="wg1" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".25" stop-color="#d4264a" stop-opacity=".6"/><stop offset=".7" stop-color="#8f1230" stop-opacity=".4"/><stop offset="1" stop-color="#8f1230" stop-opacity=".05"/></linearGradient>
+        <linearGradient id="wg2" x1="0" x2="1"><stop offset="0" stop-color="#ff3d68" stop-opacity=".0"/><stop offset=".3" stop-color="#ff3d68" stop-opacity=".5"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
+        <linearGradient id="wg3" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".5" stop-color="#5a0a1e" stop-opacity=".75"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
       </defs>
       <path d="M-60 210 C 200 110, 420 120, 640 200 S 1060 290, 1500 150 L1500 320 L-60 320Z" fill="url(#wg3)"/>
       <path d="M-60 240 C 180 150, 400 160, 620 225 S 1040 300, 1500 190 L1500 320 L-60 320Z" fill="url(#wg1)"/>
@@ -268,25 +296,38 @@ body.welcome-on #app{display:none}
   </div>
   <div class="w-nav">
     <div class="w-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Builder Card</div>
-    <div class="w-links"><button class="on" id="wHome">Home</button><button id="wExplore">Explore</button><button id="wAbout">About</button></div>
+    <div class="w-links"><button id="wHome">Home</button><button id="wExplore">Explore</button><button id="wAbout">About</button></div>
   </div>
   <div class="w-main">
-    <div class="w-copy">
-      <h1 id="wh1" aria-label="Build Your Developer Identity"><span id="wl1"></span><br><span id="wl2"></span><svg class="spark" id="wspark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M8 22L14 8M22 14L36 8M22 28L38 28"/></svg></h1>
-      <p class="w-sub" id="wsub">Turn your GitHub profile into a beautiful, shareable <b>Builder Card.</b></p>
+    <div class="w-copy" id="wcopy">
+      <h1 aria-label="Build Your Developer Identity"><span class="hw"><span class="ln">Build Your</span><span class="ln">Developer</span><span class="ln"><span class="idw"><em>Identity</em><svg class="ul" viewBox="0 0 200 12" preserveAspectRatio="none"><path pathLength="1" d="M3 8 C 55 2, 125 2, 197 7"/></svg></span></span>
+        <svg class="spark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M8 22L14 8M22 14L36 8M22 28L38 28"/></svg></span></h1>
+      <p class="w-sub" id="wsub">Turn your GitHub profile into a beautiful, shareable Builder Card.</p>
       <div class="w-btns" id="wbtns">
         <button class="wb go" id="wgo">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        <button class="wb demo" id="wdemo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>See a Demo</button>
+        <button class="wb demo" id="wdemo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 5l12 7-12 7z"/></svg>See a Demo</button>
         <svg class="fcursor" id="wcur" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.5L9.5 19z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>
       </div>
     </div>
-    <div class="w-art" aria-hidden="true">
-      <svg class="orbit" id="worbit" viewBox="0 0 560 300"><defs><linearGradient id="og" x1="0" x2="1"><stop offset="0" stop-color="#e6b94d" stop-opacity="0"/><stop offset=".5" stop-color="#e6b94d"/><stop offset="1" stop-color="#ff9a3c"/></linearGradient></defs><ellipse cx="280" cy="150" rx="262" ry="96"/></svg>
-      <div class="device" id="wdev">
-        <div class="dots"><i></i><i></i><i></i></div>
-        <svg class="gh" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        <div class="bars"><i></i><i></i><i></i><i></i></div>
+    <div class="stage" id="wstage" aria-hidden="true">
+      <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="og2" x1="0" x2="1"><stop offset="0" stop-color="#ffb02e" stop-opacity=".1"/><stop offset=".4" stop-color="#ffb02e"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs></svg>
+      <div class="plat"></div>
+      <svg class="orbit back" viewBox="0 0 600 200"><path pathLength="1" d="M20 100 A280 70 0 0 1 580 100"/></svg>
+      <div class="cards" id="wcards">
+        <div class="card side l"><svg class="corners" viewBox="0 0 100 142" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 20V9a6 6 0 0 1 6-6h11M80 3h11a6 6 0 0 1 6 6v11M97 122v11a6 6 0 0 1-6 6H80M20 139H9a6 6 0 0 1-6-6v-11"/></svg>
+          <svg class="g g1" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <svg class="g g2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+        <div class="card side r"><svg class="corners" viewBox="0 0 100 142" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 20V9a6 6 0 0 1 6-6h11M80 3h11a6 6 0 0 1 6 6v11M97 122v11a6 6 0 0 1-6 6H80M20 139H9a6 6 0 0 1-6-6v-11"/></svg>
+          <svg class="g" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="13" width="4.5" height="8" rx="1"/><rect x="9.8" y="8" width="4.5" height="13" rx="1"/><rect x="16.6" y="3" width="4.5" height="18" rx="1"/></svg></div>
+        <div class="card mainw"><div class="flip">
+          <div class="face back"><svg class="corners" viewBox="0 0 100 142" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 22V10a7 7 0 0 1 7-7h12M78 3h12a7 7 0 0 1 7 7v12M97 120v12a7 7 0 0 1-7 7H78M22 139H10a7 7 0 0 1-7-7v-12"/><circle cx="9" cy="9" r="2" fill="currentColor"/><circle cx="91" cy="9" r="2" fill="currentColor"/><circle cx="91" cy="133" r="2" fill="currentColor"/><circle cx="9" cy="133" r="2" fill="currentColor"/></svg>
+            <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+          <div class="face front"><div class="dots"><i></i><i></i><i></i></div>
+            <svg class="ghl" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <div class="bars"><i></i><i></i><i></i><i></i></div></div>
+        </div></div>
       </div>
+      <svg class="orbit front" viewBox="0 0 600 200"><path pathLength="1" d="M20 100 A280 70 0 0 0 580 100"/></svg>
     </div>
   </div>
   <button class="skip" id="wskip">Skip intro</button>
@@ -531,34 +572,26 @@ function enterApp(cb){
   setTimeout(()=>{document.body.classList.remove("welcome-on");W.classList.add("hide");cb&&cb();window.scrollTo(0,0)},reduce?0:550);
 }
 function showWelcome(){
-  W.classList.remove("hide","leave");document.body.classList.add("welcome-on");playIntro(true);
+  W.classList.remove("hide","leave");document.body.classList.add("welcome-on");playIntro();
 }
+// floating sparks above the platform
+(function(){const c=$("#wcards");for(let i=0;i<9;i++){const e=document.createElement("span");e.className="ember";
+  e.style.left=(-140+Math.random()*280)+"px";e.style.top=(40+Math.random()*130)+"px";e.style.animationDelay=(-Math.random()*4)+"s";c.appendChild(e)}})();
 function playIntro(){
   timers.forEach(clearTimeout);
-  const l1=$("#wl1"),l2=$("#wl2"),sub=$("#wsub"),btns=$("#wbtns"),dev=$("#wdev"),orb=$("#worbit"),spark=$("#wspark"),cur=$("#wcur"),go=$("#wgo"),skip=$("#wskip");
-  [sub,btns,skip].forEach(e=>e.classList.remove("show"));[dev,orb].forEach(e=>e.classList.remove("lit"));
-  spark.classList.remove("on");cur.classList.remove("go");go.classList.remove("press");
-  const A="Build Your",B="Developer ",C="Identity";
-  l1.textContent="";l2.innerHTML="";
-  const caret=document.createElement("span");caret.className="caret";l1.appendChild(caret);
-  const finish=()=>{sub.classList.add("show");btns.classList.add("show");skip.classList.add("show");caret.remove();spark.classList.add("on")};
-  if(reduce){l1.textContent=A;l2.innerHTML=B+"<em>"+C+"</em>";dev.classList.add("lit");orb.classList.add("lit");finish();return}
-  // type: line 1, then line 2 (Developer + gold Identity)
-  const gold=document.createElement("em"),plain=document.createTextNode("");l2.append(plain,gold);
-  const chars=[...A].map(c=>[0,c]).concat([...B].map(c=>[1,c]),[...C].map(c=>[2,c]));
-  let i=0,start=500;
-  later(()=>{dev.classList.add("lit");orb.classList.add("lit")},900);
-  chars.forEach(([t,c],k)=>later(()=>{
-    if(t===0){l1.insertBefore(document.createTextNode(c),caret)}
-    else if(t===1){plain.nodeValue+=c;l2.appendChild(caret)}
-    else{gold.textContent+=c;gold.appendChild(caret)}
-  },start+k*55));
-  const end=start+chars.length*55;
-  later(()=>{caret.remove();spark.classList.add("on")},end+100);
-  later(()=>sub.classList.add("show"),end+400);
-  later(()=>{btns.classList.add("show");skip.classList.add("show")},end+1000);
-  later(()=>cur.classList.add("go"),end+1900);
-  later(()=>go.classList.add("press"),end+3200);
+  const st=$("#wstage"),copy=$("#wcopy"),sub=$("#wsub"),btns=$("#wbtns"),cur=$("#wcur"),go=$("#wgo"),skip=$("#wskip");
+  st.className="stage";copy.classList.remove("show");[sub,btns,skip].forEach(e=>e.classList.remove("show"));
+  cur.classList.remove("go");go.classList.remove("press");
+  const steps=["s1","s2","s3","s4","s5","s6"];
+  if(reduce){steps.forEach(s=>st.classList.add(s));copy.classList.add("show");sub.classList.add("show");btns.classList.add("show");skip.classList.add("show");return}
+  // 1 platform glows, 2 card rises, 3 card tilts + gold ring, 4 side cards fan out, 5 card flips, 6 stage slides right
+  [[250,"s1"],[700,"s2"],[1500,"s3"],[2500,"s4"],[3300,"s5"],[4400,"s6"]].forEach(([t,s])=>later(()=>st.classList.add(s),t));
+  later(()=>skip.classList.add("show"),900);
+  later(()=>copy.classList.add("show"),4900);
+  later(()=>sub.classList.add("show"),5900);
+  later(()=>btns.classList.add("show"),6400);
+  later(()=>cur.classList.add("go"),7100);
+  later(()=>go.classList.add("press"),8400);
 }
 $("#wgo").onclick=()=>enterApp(()=>$("#u").focus());
 $("#wskip").onclick=$("#wgo").onclick;
