@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Builder Card</title>
+<meta name="description" content="Turn a GitHub profile into a clean, shareable Builder Card.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0d;--surface:#131316;--surface2:#18181c;--line:rgba(255,255,255,.08);
+  --text:#f5f5f6;--mut:#9a9aa3;--red:#d4264a;--red2:#a8183a;--gold:#e6b94d;
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:radial-gradient(900px 420px at 8% -5%,rgba(212,38,74,.20),transparent 65%),radial-gradient(800px 380px at 100% 0,rgba(230,185,77,.10),transparent 60%),var(--bg)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0}
+svg{width:1em;height:1em;flex:none}
+
+nav{display:flex;align-items:center;padding:20px 5vw;max-width:1240px;margin:0 auto}
+.logo{font-weight:700;font-size:18px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--red),var(--gold));display:grid;place-items:center;color:#111;font-size:15px;font-weight:800}
+
+header{text-align:center;padding:34px 5vw 8px}
+h1{margin:0;font-size:clamp(30px,5vw,46px);line-height:1.12;font-weight:700;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--red),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--mut);max-width:480px;margin:14px auto 28px;font-size:16px}
+form{display:flex;max-width:560px;margin:0 auto;padding:5px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .2s,box-shadow .2s}
+form:focus-within{border-color:rgba(212,38,74,.7);box-shadow:0 0 0 4px rgba(212,38,74,.12)}
+.at{display:grid;place-items:center;padding:0 4px 0 14px;color:var(--mut);font-size:18px}
+input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);padding:12px 8px;font:inherit;font-size:16px}
+input::placeholder{color:#6b6b74}
+form button{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;font-weight:600;padding:0 24px;border-radius:10px;transition:filter .2s}
+form button:hover{filter:brightness(1.12)}
+.hint{margin-top:12px;font-size:13px;color:var(--mut)}
+.hint a{color:var(--gold);border-bottom:1px dotted rgba(230,185,77,.5)}
+
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:26px 0 0}
+.tab{background:none;color:var(--mut);padding:8px 16px;border-radius:99px;font-size:13px;font-weight:500;border:1px solid transparent;transition:.2s}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--text);background:var(--surface);border-color:var(--line)}
+
+main{padding:22px 5vw 70px;max-width:1240px;margin:0 auto}
+#msg{text-align:center;color:var(--mut);padding:56px 0}
+#msg.err{color:#f27a93}
+.spin{width:26px;height:26px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--red);margin:0 auto 14px;animation:s .8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+
+.card{display:grid;grid-template-columns:310px 1fr 1fr;gap:16px;animation:in .5s ease both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.box h2{margin:0 0 18px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.box h2 a{font-size:12px;letter-spacing:0;text-transform:none;color:var(--gold);font-weight:500}
+.box h2 a:hover{text-decoration:underline}
+
+.profile{grid-row:span 2;display:flex;flex-direction:column;align-items:center;text-align:center;
+  background:linear-gradient(180deg,rgba(212,38,74,.10),transparent 45%),var(--surface)}
+.avatar{padding:3px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--gold));margin-top:6px}
+.avatar img{display:block;width:116px;height:116px;border-radius:50%;object-fit:cover;border:3px solid var(--surface)}
+.profile h3{margin:16px 0 0;font-size:22px;font-weight:700;letter-spacing:-.015em}
+.handle{color:var(--gold);font-size:14px;margin-top:2px}
+.bio{margin:12px 0 4px;font-size:14px;color:#cfcfd6}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;color:var(--mut);font-size:13px;margin-top:8px}
+.meta span{display:inline-flex;align-items:center;gap:6px}
+.nums{display:flex;width:100%;margin:20px 0 18px;padding:16px 0;border-block:1px solid var(--line)}
+.nums div{flex:1}.nums b{display:block;font-size:20px;font-weight:700}.nums span{font-size:12px;color:var(--mut)}
+.nums div+div{border-left:1px solid var(--line)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:10px;font-weight:600;font-size:14px;transition:.2s}
+.btn.red{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff}
+.btn.red:hover{filter:brightness(1.12)}
+.btn.out{background:none;border:1px solid var(--line);color:var(--text);margin-top:10px}
+.btn.out:hover{border-color:var(--gold);color:var(--gold)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{padding:6px 4px}
+.stat b{display:block;font-size:28px;font-weight:700;letter-spacing:-.02em}
+.stat span{font-size:12px;color:var(--mut)}
+.stat+.stat{border-left:1px solid var(--line);padding-left:14px}
+
+.langs{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.donut{position:relative;width:132px;height:132px;border-radius:50%;flex:none;
+  -webkit-mask:radial-gradient(circle,transparent 54%,#000 55%);mask:radial-gradient(circle,transparent 54%,#000 55%)}
+.donutwrap{position:relative;flex:none}
+.donutlabel{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:11px;color:var(--mut)}
+.donutlabel b{display:block;font-size:22px;color:var(--text);line-height:1.1}
+.legend{flex:1;min-width:160px;list-style:none;margin:0;padding:0}
+.legend li{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:14px}
+.legend i{width:9px;height:9px;border-radius:50%}
+.legend em{margin-left:auto;font-style:normal;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.repo{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line);transition:.2s}
+.repo:first-of-type{border-top:0;padding-top:0}
+.repo:hover b{color:var(--gold)}
+.repo b{display:block;font-size:15px;font-weight:600;transition:color .2s}
+.repo small{display:block;color:var(--mut);font-size:13px;margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rm{display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:13px;color:var(--mut);flex:none}
+.rm .star{color:var(--gold);display:inline-flex;align-items:center;gap:5px}
+.tag{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);color:var(--text)}
+
+.act{list-style:none;margin:0;padding:0}
+.act li{position:relative;padding:0 0 16px 22px;font-size:14px;color:#d6d6dc}
+.act li:last-child{padding-bottom:0}
+.act li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+.act li::after{content:"";position:absolute;left:3.5px;top:18px;bottom:-4px;width:1px;background:var(--line)}
+.act li:last-child::after{display:none}
+.act b{font-weight:600;color:var(--text)}
+.act small{display:block;color:var(--mut);font-size:12px;margin-top:1px}
+.empty{color:var(--mut);font-size:14px;margin:0}
+
+footer{text-align:center;color:#5f5f68;font-size:12px;padding:0 5vw 36px}
+.share{grid-column:1/-1}
+.shareRow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr);gap:24px;align-items:center}
+.shareRow img{width:100%;height:auto;border-radius:16px;border:1px solid var(--line);display:block;background:#0b0b0d}
+.shareSide .btn{margin-top:12px}
+.shareSide .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shareSide small{display:block;margin-top:10px;color:var(--gold);min-height:1.2em;font-size:13px}
+@media(max-width:800px){.shareRow{grid-template-columns:1fr}}
+.hide{display:none!important}
+
+/* ---------- Welcome screen ---------- */
+body.welcome-on{overflow:hidden}
+body.welcome-on #app{display:none}
+#welcome{position:fixed;inset:0;z-index:50;overflow:hidden;background:#050506;color:#fff;transition:opacity .6s ease,transform .6s ease}
+#welcome.leave{opacity:0;transform:scale(1.03);pointer-events:none}
+.w-glow{position:absolute;inset:0;background:radial-gradient(700px 400px at 78% 45%,rgba(212,38,74,.16),transparent 70%),radial-gradient(500px 300px at 90% 60%,rgba(230,185,77,.08),transparent 70%)}
+.w-nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:22px 5vw}
+.w-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.01em}
+.w-logo svg{width:28px;height:28px;color:var(--red)}
+.w-links{display:flex;gap:28px;font-size:14px;font-weight:500}
+.w-links button{background:none;color:#cfcfd4;padding:4px 0;transition:color .2s}
+.w-links button:hover,.w-links button.on{color:#fff}
+.w-main{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 5vw;height:calc(100vh - 140px);min-height:420px;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:20px}
+.w-copy{padding-bottom:6vh}
+.w-copy h1{margin:0;white-space:nowrap;font-size:clamp(30px,4.5vw,60px);line-height:1.08;letter-spacing:-.03em;font-weight:700;min-height:2.2em;position:relative}
+.w-copy h1 em{font-style:normal;color:var(--gold)}
+.caret{display:inline-block;width:2px;height:.9em;background:#fff;margin-left:3px;vertical-align:-.08em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.spark{position:absolute;left:105%;top:-.1em;height:.75em;width:.75em;height:.75em;color:var(--gold);opacity:0;transform:scale(.4) rotate(-10deg);transform-origin:bottom left}
+.spark.on{animation:pop .5s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.w-sub{margin:18px 0 0;max-width:420px;font-size:clamp(15px,1.6vw,18px);color:#b9b9c1;opacity:0;transform:translateY(10px);transition:.7s ease}
+.w-sub b{color:#fff;font-weight:600}
+.w-btns{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;opacity:0;transform:translateY(10px);transition:.7s ease;position:relative}
+.w-sub.show,.w-btns.show{opacity:1;transform:none}
+.wb{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:12px;font-weight:600;font-size:15px;transition:transform .2s,filter .2s,box-shadow .2s}
+.wb svg{width:16px;height:16px}
+.wb.go{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;box-shadow:0 8px 30px -8px rgba(212,38,74,.7)}
+.wb.go:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.wb.demo{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.3);color:#fff}
+.wb.demo:hover{border-color:var(--gold);color:var(--gold)}
+.wb.go.press{animation:press .7s ease}
+@keyframes press{40%{transform:scale(.95);box-shadow:0 0 0 0 rgba(212,38,74,.8)}100%{transform:none;box-shadow:0 0 0 22px rgba(212,38,74,0)}}
+.fcursor{position:absolute;left:78%;top:150%;width:22px;height:22px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));z-index:5}
+.fcursor.go{animation:cur 1.4s ease forwards}
+@keyframes cur{0%{opacity:0;left:92%;top:170%}25%{opacity:1}75%{left:22%;top:62%;opacity:1}100%{left:20%;top:58%;opacity:1}}
+
+.w-art{position:relative;height:100%;display:grid;place-items:center;perspective:1100px}
+.device{position:relative;width:min(320px,70%);aspect-ratio:300/340;border-radius:22px;
+  background:linear-gradient(145deg,#1d1014,#0b0809 70%);border:1.5px solid rgba(212,38,74,.9);
+  box-shadow:0 0 60px rgba(212,38,74,.35),inset 0 0 40px rgba(212,38,74,.12);
+  transform:rotateY(-20deg) rotateX(8deg) rotateZ(5deg);opacity:.22;filter:saturate(.5);
+  transition:opacity 1.6s ease,filter 1.6s ease,box-shadow 1.6s ease;animation:float 6s ease-in-out infinite}
+.device.lit{opacity:1;filter:none}
+@keyframes float{50%{translate:0 -10px}}
+.dots{position:absolute;left:18px;top:16px;display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#ef4444}.dots i:nth-child(2){background:var(--gold)}.dots i:nth-child(3){background:#5b5b66}
+.gh{position:absolute;left:50%;top:24%;width:32%;height:auto;aspect-ratio:1;translate:-50% 0;color:#e9e9ec;filter:drop-shadow(0 0 14px rgba(255,255,255,.25))}
+.bars{position:absolute;left:12%;right:12%;bottom:14%;display:grid;gap:12px}
+.bars i{display:block;height:11px;border-radius:6px;background:#3a3a42}
+.bars i:nth-child(1){background:linear-gradient(90deg,#b8b8c0,#6a6a74);width:100%}
+.bars i:nth-child(2){background:linear-gradient(90deg,var(--gold),#b5862a);width:78%}
+.bars i:nth-child(3){background:linear-gradient(90deg,var(--red),var(--red2));width:60%}
+.bars i:nth-child(4){width:42%;background:#2a2a31}
+.orbit{position:absolute;height:auto;width:min(560px,118%);left:50%;top:50%;translate:-50% -50%;rotate:-18deg;pointer-events:none;opacity:.2;transition:opacity 1.6s}
+.orbit.lit{opacity:1}
+.orbit ellipse{fill:none;stroke:url(#og);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:420 900;animation:dash 7s linear infinite;filter:drop-shadow(0 0 6px rgba(230,185,77,.7))}
+@keyframes dash{to{stroke-dashoffset:-1320}}
+
+.waves{position:absolute;left:0;right:0;bottom:0;height:34vh;min-height:170px;z-index:1;pointer-events:none}
+.waves svg{position:absolute;inset:0;width:100%;height:100%}
+.waves path{transform-origin:50% 100%;animation:wave 9s ease-in-out infinite alternate}
+.waves path:nth-child(2){animation-duration:12s;animation-delay:-3s}
+.waves path:nth-child(3){animation-duration:15s;animation-delay:-6s}
+@keyframes wave{from{transform:translateX(-2%) scaleY(1)}to{transform:translateX(2%) scaleY(1.12)}}
+.skip{position:absolute;right:5vw;bottom:22px;z-index:4;background:none;color:#8b8b95;font-size:12px;opacity:0;transition:opacity .6s}
+.skip.show{opacity:1}.skip:hover{color:#fff}
+
+.appnav{display:flex;align-items:center;justify-content:space-between;padding:20px 5vw;max-width:1240px;margin:0 auto}
+.appnav .links{display:flex;gap:24px;font-size:14px}
+.appnav .links button{background:none;color:var(--mut)}.appnav .links button:hover{color:var(--text)}
+.logo svg{width:26px;height:26px;color:var(--red)}
+
+@media(max-width:860px){
+  .w-main{grid-template-columns:minmax(0,1fr);height:auto;padding-top:3vh;gap:0}
+  .w-art{height:300px;order:2;overflow:hidden;margin-top:18px}.w-copy{padding-bottom:0}
+  .device{width:200px}.orbit{width:118%}
+  .w-links{gap:16px;font-size:13px}.w-logo{font-size:17px}
+  .w-sub{max-width:100%}.spark{left:auto;right:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .w-sub,.w-btns{opacity:1;transform:none}.device{opacity:1;filter:none}.orbit{opacity:1}.spark{opacity:1;transform:none}
+}
+@media(max-width:1000px){.card{grid-template-columns:1fr}.profile{grid-row:auto}}
+@media(max-width:560px){
+  .stats{grid-template-columns:repeat(2,1fr);row-gap:18px}.stat:nth-child(3){border-left:0;padding-left:4px}
+  .repo{align-items:flex-start}.donut{width:116px;height:116px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="welcome" aria-label="Welcome">
+  <div class="w-glow"></div>
+  <div class="waves" aria-hidden="true">
+    <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="wg1" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".25" stop-color="#d4264a" stop-opacity=".55"/><stop offset=".7" stop-color="#8f1230" stop-opacity=".35"/><stop offset="1" stop-color="#8f1230" stop-opacity=".05"/></linearGradient>
+        <linearGradient id="wg2" x1="0" x2="1"><stop offset="0" stop-color="#ff3d68" stop-opacity=".0"/><stop offset=".3" stop-color="#ff3d68" stop-opacity=".45"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
+        <linearGradient id="wg3" x1="0" x2="1"><stop offset="0" stop-color="#d4264a" stop-opacity=".0"/><stop offset=".5" stop-color="#5a0a1e" stop-opacity=".7"/><stop offset="1" stop-color="#d4264a" stop-opacity=".0"/></linearGradient>
+      </defs>
+      <path d="M-60 210 C 200 110, 420 120, 640 200 S 1060 290, 1500 150 L1500 320 L-60 320Z" fill="url(#wg3)"/>
+      <path d="M-60 240 C 180 150, 400 160, 620 225 S 1040 300, 1500 190 L1500 320 L-60 320Z" fill="url(#wg1)"/>
+      <path d="M-60 170 C 220 90, 460 150, 700 190 S 1100 230, 1500 120" fill="none" stroke="url(#wg2)" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="w-nav">
+    <div class="w-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Builder Card</div>
+    <div class="w-links"><button class="on" id="wHome">Home</button><button id="wExplore">Explore</button><button id="wAbout">About</button></div>
+  </div>
+  <div class="w-main">
+    <div class="w-copy">
+      <h1 id="wh1" aria-label="Build Your Developer Identity"><span id="wl1"></span><br><span id="wl2"></span><svg class="spark" id="wspark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M8 22L14 8M22 14L36 8M22 28L38 28"/></svg></h1>
+      <p class="w-sub" id="wsub">Turn your GitHub profile into a beautiful, shareable <b>Builder Card.</b></p>
+      <div class="w-btns" id="wbtns">
+        <button class="wb go" id="wgo">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button class="wb demo" id="wdemo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>See a Demo</button>
+        <svg class="fcursor" id="wcur" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.5L9.5 19z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="w-art" aria-hidden="true">
+      <svg class="orbit" id="worbit" viewBox="0 0 560 300"><defs><linearGradient id="og" x1="0" x2="1"><stop offset="0" stop-color="#e6b94d" stop-opacity="0"/><stop offset=".5" stop-color="#e6b94d"/><stop offset="1" stop-color="#ff9a3c"/></linearGradient></defs><ellipse cx="280" cy="150" rx="262" ry="96"/></svg>
+      <div class="device" id="wdev">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <svg class="gh" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <div class="bars"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+  <button class="skip" id="wskip">Skip intro</button>
+</div>
+
+<div id="app">
+<nav class="appnav"><button class="logo" id="toHome" style="background:none;color:inherit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Builder Card</button></nav>
+<header>
+  <h1>Turn a GitHub profile into a <em>Builder Card</em></h1>
+  <p>A clean, shareable summary of any developer's work: projects, skills and recent activity.</p>
+  <form id="f">
+    <span class="at">@</span>
+    <input id="u" placeholder="GitHub username" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="GitHub username" autofocus>
+    <button>Generate Card</button>
+  </form>
+  <div class="hint">Try <a href="?u=Arunodoy18">Arunodoy18</a></div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-s="all">Overview</button>
+    <button class="tab" data-s="repos">Top Projects</button>
+    <button class="tab" data-s="langs">Skills</button>
+    <button class="tab" data-s="act">Recent Activity</button>
+  </div>
+</header>
+<main>
+  <div id="msg">Enter a username to create a card.</div>
+  <div id="card" class="card hide"></div>
+</main>
+<footer id="about">Builder Card turns public GitHub data into a clean, shareable profile summary.</footer>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const COLORS=["#d4264a","#e6b94d","#f08a4b","#9b6bd6","#4fa3d9","#5b5b66"];
+const I={
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.9 7.5.7-5.7 5 1.7 7.4L12 18l-6.5 4 1.7-7.4-5.7-5L9 8.9z"/></svg>',
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>'
+};
+const DAY=864e5;
+const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[86400,"day"],[3600,"hour"],[60,"minute"]])if(s>=n){const v=Math.floor(s/n);return v+" "+l+(v>1?"s":"")+" ago"}return "Just now"};
+const num=n=>n.toLocaleString("en-US");
+const host=u=>{try{return new URL(/^https?:/.test(u)?u:"https://"+u).host.replace(/^www\./,"")}catch{return u}};
+
+async function gh(path){
+  const r=await fetch("https://api.github.com"+path,{headers:{Accept:"application/vnd.github+json"}});
+  if(r.status===404)throw new Error("We couldn't find that GitHub user. Please check the spelling.");
+  if(r.status===403||r.status===429)throw new Error("Too many requests right now. Please try again in a few minutes.");
+  if(!r.ok)throw new Error("Something went wrong. Please try again.");
+  return r.json();
+}
+
+// Top projects: original work only, recent work first, with a small boost for stars.
+function pickTop(repos){
+  const score=r=>new Date(r.pushed_at).getTime()+r.stargazers_count*14*DAY;
+  const good=repos.filter(r=>!r.fork&&!r.archived&&r.language&&r.name.toLowerCase()!==r.owner.login.toLowerCase());
+  return good.sort((a,b)=>score(b)-score(a)).slice(0,3);
+}
+function repoLine(r){
+  if(r.description)return r.description;
+  return `${r.language} project, updated ${new Date(r.pushed_at).toLocaleDateString("en-US",{month:"short",year:"numeric"})}`;
+}
+function describe(e,login){
+  const full=e.repo.name,short=full.toLowerCase().startsWith(login.toLowerCase()+"/")?full.split("/")[1]:full;
+  const repo=`<b>${esc(short)}</b>`,p=e.payload||{};
+  switch(e.type){
+    case"PushEvent":{const n=p.size??p.commits?.length;return n?`Pushed ${n} update${n>1?"s":""} to ${repo}`:`Pushed updates to ${repo}`}
+    case"PullRequestEvent":return p.pull_request?.merged?`Merged a pull request in ${repo}`:p.action==="opened"?`Opened a pull request in ${repo}`:`Updated a pull request in ${repo}`;
+    case"CreateEvent":return p.ref_type==="repository"?`Created ${repo}`:`Created a ${esc(p.ref_type)} in ${repo}`;
+    case"IssuesEvent":return `${p.action==="opened"?"Opened":"Updated"} an issue in ${repo}`;
+    case"WatchEvent":return `Starred ${repo}`;
+    case"ForkEvent":return `Forked ${repo}`;
+    case"IssueCommentEvent":case"PullRequestReviewEvent":case"PullRequestReviewCommentEvent":return `Joined a discussion in ${repo}`;
+    case"ReleaseEvent":return `Published a release in ${repo}`;
+    default:return null;
+  }
+}
+
+const cardUrl=l=>location.origin+"/api/card?u="+encodeURIComponent(l);
+function save(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function render(u,repos,events){
+  const own=repos.filter(r=>!r.fork);
+  const stars=own.reduce((a,r)=>a+r.stargazers_count,0),forks=own.reduce((a,r)=>a+r.forks_count,0);
+  const pushes=events.filter(e=>e.type==="PushEvent");
+  const commits=pushes.length;
+  const lc={};own.forEach(r=>r.language&&(lc[r.language]=(lc[r.language]||0)+1));
+  let ls=Object.entries(lc).sort((a,b)=>b[1]-a[1]);
+  const total=ls.reduce((a,x)=>a+x[1],0),langCount=ls.length;
+  if(ls.length>5){const rest=ls.slice(5).reduce((a,x)=>a+x[1],0);ls=[...ls.slice(0,5),["Others",rest]]}
+  let acc=0;const stops=ls.map(([,c],i)=>{const s=acc/total*100;acc+=c;return `${COLORS[i]} ${s}% ${acc/total*100}%`}).join(",");
+  const top=pickTop(repos);
+  const seen=new Set();
+  const acts=events.map(e=>({e,t:describe(e,u.login)})).filter(x=>x.t&&!seen.has(x.t)&&seen.add(x.t)).slice(0,5);
+  const site=u.blog?(/^https?:/.test(u.blog)?u.blog:"https://"+u.blog):"";
+
+  $("#card").innerHTML=`
+  <section class="box profile" data-k="all">
+    <div class="avatar"><img src="${esc(u.avatar_url)}&s=240" alt="${esc(u.name||u.login)}"></div>
+    <h3>${esc(u.name||u.login)}</h3><div class="handle">@${esc(u.login)}</div>
+    ${u.bio?`<p class="bio">${esc(u.bio)}</p>`:""}
+    <div class="meta">${u.location?`<span>${I.pin}${esc(u.location)}</span>`:""}${site?`<span>${I.link}<a href="${esc(site)}" target="_blank" rel="noopener">${esc(host(u.blog))}</a></span>`:""}</div>
+    <div class="nums"><div><b>${num(u.public_repos)}</b><span>Projects</span></div><div><b>${num(u.followers)}</b><span>Followers</span></div><div><b>${num(u.following)}</b><span>Following</span></div></div>
+    <a class="btn red" href="${esc(u.html_url)}" target="_blank" rel="noopener">View on GitHub ${I.out}</a>
+    <button class="btn out" id="share">${I.share} Share Builder Card</button>
+  </section>
+
+  <section class="box" data-k="all"><h2>At a glance</h2><div class="stats">
+    <div class="stat"><b>${num(stars)}</b><span>Stars earned</span></div>
+    <div class="stat"><b>${num(forks)}</b><span>Times forked</span></div>
+    <div class="stat"><b>${num(commits)}</b><span>Recent updates</span></div>
+    <div class="stat"><b>${num(langCount)}</b><span>Languages used</span></div></div></section>
+
+  <section class="box" data-k="langs"><h2>Main Languages</h2>${ls.length?`<div class="langs">
+    <div class="donutwrap"><div class="donut" style="background:conic-gradient(${stops})"></div><div class="donutlabel"><span><b>${langCount}</b>Languages</span></div></div>
+    <ul class="legend">${ls.map(([n,c],i)=>`<li><i style="background:${COLORS[i]}"></i>${esc(n)}<em>${(c/total*100).toFixed(0)}%</em></li>`).join("")}</ul></div>`:`<p class="empty">No language data yet.</p>`}</section>
+
+  <section class="box" data-k="repos"><h2>Top Projects <a href="${esc(u.html_url)}?tab=repositories" target="_blank" rel="noopener">View all</a></h2>
+    ${top.map(r=>`<a class="repo" href="${esc(r.html_url)}" target="_blank" rel="noopener"><div><b>${esc(r.name)}</b><small>${esc(repoLine(r))}</small></div>
+    <div class="rm"><span class="tag">${esc(r.language)}</span><span class="star">${I.star}${r.stargazers_count}</span></div></a>`).join("")||'<p class="empty">No public projects yet.</p>'}</section>
+
+  <section class="box" data-k="act"><h2>Recent Activity <a href="${esc(u.html_url)}" target="_blank" rel="noopener">View on GitHub</a></h2>
+    ${acts.length?`<ul class="act">${acts.map(x=>`<li>${x.t}<small>${ago(x.e.created_at)}</small></li>`).join("")}</ul>`:'<p class="empty">No recent public activity.</p>'}</section>
+
+  <section class="box share" data-k="all"><h2>Use this card on your GitHub</h2>
+    <div class="shareRow">
+      <img id="cardImg" alt="Builder Card for ${esc(u.login)}" src="${cardUrl(u.login)}">
+      <div class="shareSide">
+        <p class="empty">Add your card to your profile README. It updates by itself.</p>
+        <button class="btn red" id="copyMd">Copy README code</button>
+        <div class="two"><button class="btn out" id="dlPng">Download PNG</button><button class="btn out" id="dlSvg">Download SVG</button></div>
+        <small id="shareNote"></small>
+      </div>
+    </div></section>`;
+
+  const note=t=>{const n=$("#shareNote");n.textContent=t;setTimeout(()=>n.textContent="",2500)};
+  $("#copyMd").onclick=async()=>{
+    const md=`[![Builder Card](${cardUrl(u.login)})](${location.origin}${location.pathname}?u=${u.login})`;
+    try{await navigator.clipboard.writeText(md);note("Copied. Paste it into your README.")}catch{prompt("Copy this into your README:",md)}
+  };
+  $("#dlSvg").onclick=async()=>{
+    try{const svg=await (await fetch(cardUrl(u.login))).blob();save(svg,u.login+"-builder-card.svg")}catch{note("Download failed. Try again.")}
+  };
+  $("#dlPng").onclick=async()=>{
+    try{
+      const svg=await (await fetch(cardUrl(u.login))).text();
+      const img=new Image();img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);await img.decode();
+      const c=document.createElement("canvas");c.width=2000;c.height=1080;c.getContext("2d").drawImage(img,0,0,2000,1080);
+      c.toBlob(b=>save(b,u.login+"-builder-card.png"),"image/png");
+    }catch{note("Download failed. Try again.")}
+  };
+  $("#share").onclick=async()=>{
+    const url=location.origin+location.pathname+"?u="+u.login,b=$("#share");
+    try{await navigator.clipboard.writeText(url);b.innerHTML=I.share+" Link copied";setTimeout(()=>b.innerHTML=I.share+" Share Builder Card",2000)}catch{prompt("Copy this link:",url)}
+  };
+  applyTab();
+}
+
+let tab="all";
+function applyTab(){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.s===tab));
+  document.querySelectorAll("#card [data-k]").forEach(s=>
+    s.classList.toggle("hide",!(tab==="all"||s.dataset.k===tab||s.classList.contains("profile"))));
+}
+$("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b){tab=b.dataset.s;applyTab()}};
+
+async function generate(name){
+  name=name.trim().replace(/^@/,"").replace(/^https?:\/\/github\.com\//i,"").split(/[/?#]/)[0];
+  if(!/^[a-z\d](?:[a-z\d-]{0,38})$/i.test(name)){setMsg("Please enter a valid GitHub username.",1);return}
+  setMsg("Creating your card…",0,1);$("#card").classList.add("hide");
+  try{
+    const u=await gh("/users/"+name);
+    const [repos,events]=await Promise.all([gh(`/users/${name}/repos?per_page=100&sort=pushed`),gh(`/users/${name}/events/public?per_page=100`)]);
+    render(u,repos,events);
+    $("#msg").classList.add("hide");$("#card").classList.remove("hide");
+    history.replaceState(null,"","?u="+u.login);document.title=(u.name||u.login)+" · Builder Card";
+  }catch(err){setMsg(err.message,1)}
+}
+function setMsg(t,err,load){const m=$("#msg");m.className=err?"err":"";m.innerHTML=(load?'<div class="spin"></div>':"")+esc(t)}
+$("#f").onsubmit=e=>{e.preventDefault();generate($("#u").value)};
+/* ---------- Welcome animation ---------- */
+const W=$("#welcome"),reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+let timers=[];const later=(f,ms)=>timers.push(setTimeout(f,ms));
+function enterApp(cb){
+  timers.forEach(clearTimeout);W.classList.add("leave");
+  setTimeout(()=>{document.body.classList.remove("welcome-on");W.classList.add("hide");cb&&cb();window.scrollTo(0,0)},reduce?0:550);
+}
+function showWelcome(){
+  W.classList.remove("hide","leave");document.body.classList.add("welcome-on");playIntro(true);
+}
+function playIntro(){
+  timers.forEach(clearTimeout);
+  const l1=$("#wl1"),l2=$("#wl2"),sub=$("#wsub"),btns=$("#wbtns"),dev=$("#wdev"),orb=$("#worbit"),spark=$("#wspark"),cur=$("#wcur"),go=$("#wgo"),skip=$("#wskip");
+  [sub,btns,skip].forEach(e=>e.classList.remove("show"));[dev,orb].forEach(e=>e.classList.remove("lit"));
+  spark.classList.remove("on");cur.classList.remove("go");go.classList.remove("press");
+  const A="Build Your",B="Developer ",C="Identity";
+  l1.textContent="";l2.innerHTML="";
+  const caret=document.createElement("span");caret.className="caret";l1.appendChild(caret);
+  const finish=()=>{sub.classList.add("show");btns.classList.add("show");skip.classList.add("show");caret.remove();spark.classList.add("on")};
+  if(reduce){l1.textContent=A;l2.innerHTML=B+"<em>"+C+"</em>";dev.classList.add("lit");orb.classList.add("lit");finish();return}
+  // type: line 1, then line 2 (Developer + gold Identity)
+  const gold=document.createElement("em"),plain=document.createTextNode("");l2.append(plain,gold);
+  const chars=[...A].map(c=>[0,c]).concat([...B].map(c=>[1,c]),[...C].map(c=>[2,c]));
+  let i=0,start=500;
+  later(()=>{dev.classList.add("lit");orb.classList.add("lit")},900);
+  chars.forEach(([t,c],k)=>later(()=>{
+    if(t===0){l1.insertBefore(document.createTextNode(c),caret)}
+    else if(t===1){plain.nodeValue+=c;l2.appendChild(caret)}
+    else{gold.textContent+=c;gold.appendChild(caret)}
+  },start+k*55));
+  const end=start+chars.length*55;
+  later(()=>{caret.remove();spark.classList.add("on")},end+100);
+  later(()=>sub.classList.add("show"),end+400);
+  later(()=>{btns.classList.add("show");skip.classList.add("show")},end+1000);
+  later(()=>cur.classList.add("go"),end+1900);
+  later(()=>go.classList.add("press"),end+3200);
+}
+$("#wgo").onclick=()=>enterApp(()=>$("#u").focus());
+$("#wskip").onclick=$("#wgo").onclick;
+$("#wExplore").onclick=$("#wgo").onclick;
+$("#wAbout").onclick=()=>enterApp(()=>$("#about").scrollIntoView({behavior:"smooth"}));
+$("#wHome").onclick=()=>playIntro();
+$("#wdemo").onclick=()=>enterApp(()=>{$("#u").value="Arunodoy18";generate("Arunodoy18")});
+$("#toHome").onclick=showWelcome;
+
+const q=new URLSearchParams(location.search).get("u");
+if(q){W.classList.add("hide");$("#u").value=q;generate(q)}
+else{document.body.classList.add("welcome-on");playIntro()}
+</script>
+</body>
+</html>
