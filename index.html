@@ -290,6 +290,17 @@ footer b{font-family:var(--display);color:#eadfc6}
 .lbar u{display:block;height:100%;border-radius:99px;box-shadow:0 0 14px currentColor}
 @media(max-width:1180px){.card.solo{grid-template-columns:1fr}.card.solo .profile{grid-column:1}.card.solo .box:not(.profile){grid-column:1;grid-row:auto}}
 
+
+/* ===== Chess mode ===== */
+.card.chessmode{grid-template-columns:minmax(0,1fr)}
+.chesspanel{grid-column:1/-1}
+.chessnote{margin:0 0 16px;color:#cbbd98;font-size:14px;max-width:720px}
+.chessimg{width:100%;height:auto;border-radius:18px;display:block;border:1px solid rgba(251,191,36,.25);background:#0b0b0d;box-shadow:0 30px 70px -30px rgba(225,29,63,.6)}
+.chessactions{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:12px;margin-top:18px}
+.chessactions .btn{margin-top:0}
+#chessNote{display:block;margin-top:10px;color:var(--gold);min-height:1.2em;font-size:13px}
+@media(max-width:560px){.chessactions{grid-template-columns:1fr}}
+
 /* ---------- Welcome screen ---------- */
 body.welcome-on{overflow:hidden}
 body.welcome-on #app{display:none}
@@ -506,6 +517,7 @@ body.welcome-on #app{display:none}
     <button class="tab" data-s="repos"><i class="ti" data-i="layers"></i>Top Repos</button>
     <button class="tab" data-s="langs"><i class="ti" data-i="bars"></i>Languages</button>
     <button class="tab" data-s="act"><i class="ti" data-i="pulse"></i>Recent Activity</button>
+    <button class="tab" data-s="chess"><i class="ti" data-i="pawn"></i>Chess Mode</button>
   </div>
 </header>
 <main>
@@ -538,6 +550,7 @@ const I={
   person:sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'),
   pr:sv('<circle cx="6" cy="5.5" r="2.5"/><circle cx="6" cy="18.5" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M6 8v8M18 16V9a3 3 0 0 0-3-3h-3"/>'),
   push:sv('<circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/>'),
+  pawn:sv('<circle cx="12" cy="6.5" r="3"/><path d="M9.5 12.5h5M10.3 12.5c0 3-1.3 4.5-2.3 8.5h8c-1-4-2.3-5.5-2.3-8.5M7 21h10"/>'),
   dot:sv('<circle cx="12" cy="12" r="3"/>')
 };
 // fill the fixed icons
@@ -577,6 +590,7 @@ function describe(e,login){
     default:return null;
   }
 }
+const chessUrl=l=>location.origin+"/api/chess?u="+encodeURIComponent(l);
 const cardUrl=l=>location.origin+"/api/card?u="+encodeURIComponent(l);
 function save(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 
@@ -640,6 +654,12 @@ function render(u,repos,events,totalCommits){
     <div class="ov">${acts.length?`<ul class="act">${acts.map(actRow).join("")}</ul>`:'<p class="empty">No recent public activity.</p>'}</div>
     <div class="dt">${actsAll.length?`<ul class="act">${actsAll.map(actRow).join("")}</ul>`:'<p class="empty">No recent public activity.</p>'}</div></section>
 
+  <section class="box chesspanel" data-k="chess"><h2><span class="ic">${I.pawn}</span>Chess Mode<small class="idx">// animated</small></h2>
+    <p class="chessnote">A short chess game plays out. Each move reveals one thing about ${esc(u.name||u.login)}, and it ends in checkmate. It also works in a README as an animated image.</p>
+    <img class="chessimg" alt="Animated chess game for ${esc(u.login)}" src="${chessUrl(u.login)}">
+    <div class="chessactions"><button class="btn red" id="copyChess">Copy README code</button><button class="btn out" id="dlChess">Download SVG</button></div>
+    <small id="chessNote"></small></section>
+
   <section class="box share" data-k="all"><h2><span class="ic">${I.share}</span>Use this card on your GitHub<small class="idx">// readme</small></h2>
     <div class="shareRow">
       <img id="cardImg" alt="Builder Card for ${esc(u.login)}" src="${cardUrl(u.login)}">
@@ -667,6 +687,14 @@ function render(u,repos,events,totalCommits){
       c.toBlob(b=>save(b,u.login+"-builder-card.png"),"image/png");
     }catch{note("Download failed. Try again.")}
   };
+  const cnote=t=>{const n=$("#chessNote");n.textContent=t;setTimeout(()=>n.textContent="",2500)};
+  $("#copyChess").onclick=async()=>{
+    const md=`[![Builder Card: chess mode](${chessUrl(u.login)})](${location.origin}${location.pathname}?u=${u.login})`;
+    try{await navigator.clipboard.writeText(md);cnote("Copied. Paste it into your README.")}catch{prompt("Copy this into your README:",md)}
+  };
+  $("#dlChess").onclick=async()=>{
+    try{save(await (await fetch(chessUrl(u.login))).blob(),u.login+"-chess-card.svg")}catch{cnote("Download failed. Try again.")}
+  };
   $("#share").onclick=async()=>{
     const url=location.origin+location.pathname+"?u="+u.login,b=$("#share");
     try{await navigator.clipboard.writeText(url);b.innerHTML=I.share+" Link copied";setTimeout(()=>b.innerHTML=I.share+" Share Builder Card",2000)}catch{prompt("Copy this link:",url)}
@@ -676,10 +704,18 @@ function render(u,repos,events,totalCommits){
 
 let tab="all";
 function applyTab(){
-  $("#card").classList.toggle("solo",tab!=="all");
+  const card=$("#card");
+  card.classList.toggle("solo",tab!=="all"&&tab!=="chess");
+  card.classList.toggle("chessmode",tab==="chess");
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.s===tab));
-  document.querySelectorAll("#card [data-k]").forEach(s=>
-    s.classList.toggle("hide",!(tab==="all"||s.dataset.k===tab||s.classList.contains("profile"))));
+  document.querySelectorAll("#card [data-k]").forEach(s=>{
+    const k=s.dataset.k,isProfile=s.classList.contains("profile");
+    let show;
+    if(tab==="chess")show=k==="chess";
+    else if(tab==="all")show=k!=="chess";
+    else show=k===tab||isProfile;
+    s.classList.toggle("hide",!show);
+  });
 }
 $("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b){tab=b.dataset.s;applyTab()}};
 
